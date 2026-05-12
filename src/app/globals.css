@@ -1,0 +1,118 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #0a0a0b;
+  --color-bg-elevated: #141416;
+  --color-bg-elevated-2: #1a1a1d;
+  --color-border: #1f1f23;
+  --color-border-strong: #2a2a2f;
+  --color-fg: #fafafa;
+  --color-fg-muted: #8b8b92;
+  --color-fg-subtle: #5a5a62;
+  --color-accent: #7dd3fc;
+  --color-accent-hover: #a5e0fd;
+  --color-accent-dim: #7dd3fc26;
+  --color-violet: #a78bfa;
+  --color-pink: #f0abfc;
+  --color-coral: #ff6b4a;
+  --color-coral-dim: #ff6b4a22;
+  --color-success: #4ade80;
+  --color-error: #ef4444;
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-instrument-serif);
+
+  --radius-card: 16px;
+  --radius-input: 8px;
+  --radius-modal: 24px;
+}
+
+@layer base {
+  html, body {
+    background: var(--color-bg);
+    color: var(--color-fg);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    background-image:
+      radial-gradient(ellipse 80% 60% at 20% 0%, rgba(139, 92, 246, 0.15), transparent 60%),
+      radial-gradient(ellipse 70% 50% at 80% 10%, rgba(125, 211, 252, 0.12), transparent 60%),
+      radial-gradient(ellipse 60% 40% at 50% 100%, rgba(167, 139, 250, 0.08), transparent 70%);
+    background-attachment: fixed;
+  }
+
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-bg);
+  }
+}
+
+@layer utilities {
+  .text-display {
+    font-family: var(--font-display), Georgia, serif;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+  }
+
+  .glow-accent {
+    box-shadow: 0 0 0 1px rgba(125, 211, 252, 0.3), 0 0 40px -8px rgba(125, 211, 252, 0.4);
+  }
+
+  .glass {
+    background: rgba(20, 20, 22, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .card-base {
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+  }
+
+  @keyframes pulse-ring {
+    0% { box-shadow: 0 0 0 0 rgba(125, 211, 252, 0.5); }
+    100% { box-shadow: 0 0 0 24px rgba(125, 211, 252, 0); }
+  }
+
+  .pulse-ring {
+    animation: pulse-ring 1.2s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  }
+
+  .gradient-text {
+    background: linear-gradient(90deg, #7dd3fc 0%, #a78bfa 50%, #f0abfc 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  .gradient-text-soft {
+    background: linear-gradient(90deg, #7dd3fc 0%, #a78bfa 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  .btn-pill {
+    border-radius: 999px !important;
+  }
+
+  .glow-icon {
+    filter: drop-shadow(0 0 30px rgba(125, 211, 252, 0.5))
+            drop-shadow(0 0 60px rgba(167, 139, 250, 0.3));
+  }
+
+  @keyframes metronome-pulse {
+    0%, 100% { transform: scale(0.85); opacity: 0.6; }
+    50% { transform: scale(1.1); opacity: 1; }
+  }
+
+  .metronome-pulse {
+    animation: metronome-pulse var(--bpm-duration, 500ms) ease-in-out infinite;
+  }
+}
