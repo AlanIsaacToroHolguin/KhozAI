@@ -7,9 +7,18 @@ const AUTH_PAGES = ["/login", "/signup"];
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({ request });
 
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  // Fail open: if Supabase env vars are missing (e.g. preview deploy without secrets),
+  // skip the auth check rather than 500-ing the whole site.
+  if (!url || !anon) {
+    return response;
+  }
+
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    url,
+    anon,
     {
       cookies: {
         getAll() {
@@ -28,9 +37,14 @@ export async function middleware(request: NextRequest) {
     }
   );
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  let user = null;
+  try {
+    const { data } = await supabase.auth.getUser();
+    user = data.user;
+  } catch {
+    // Network or auth error — treat as anonymous; the page itself will handle redirects
+    return response;
+  }
 
   const path = request.nextUrl.pathname;
   const isProtected = PROTECTED.some((p) => path.startsWith(p));
